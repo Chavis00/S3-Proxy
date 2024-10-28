@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - s3
+
+  s3:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    command: server /data
+    volumes:
+      - s3data:/data
+
+volumes:
+  s3data:
